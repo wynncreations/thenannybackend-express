@@ -1,0 +1,32 @@
+{
+  "name": "thenannybackend-express",
+  "version": "1.0.0",
+  "description": "The Nanny's backend in express.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wynncreations/thenannybackend-express.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wynncreations/thenannybackend-express/issues"
+  },
+  "homepage": "https://github.com/wynncreations/thenannybackend-express#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "cookie-session": "^1.3.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "mongoose": "^5.6.4",
+    "morgan": "^1.9.1",
+    "path": "^0.12.7"
+  }
+}
