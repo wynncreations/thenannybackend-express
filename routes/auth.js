@@ -5,16 +5,12 @@ const bcrypt = require('bcrypt');
 const User = require("../models/user");
 
 //receive and register the new user.
-router.post("/register",(res,req,next)=>{
-    
-
-    //crypt the password hash
-    //create a new User
-    //insert to DB
+router.post("/register",(req,res,next)=>{
     const saltRounds = 10;
-
-    //check for an existing user
-    User.find({username:req.body.username},(err,foundUser)=>{
+    //check for an existing user 
+    User.find({
+                username: req.body.username
+            }, (err, foundUser) => {
         if(err){
             res.status(400).send(`Error searching for user - ${err}`);
         }
@@ -27,12 +23,8 @@ router.post("/register",(res,req,next)=>{
                 }else{
                     var user = new User({
                         username: req.body.username,
+                        password: hash,
                         firstname: req.body.firstname,
-                        password: bcrypt.genSalt(saltRounds, (err, salt) => {
-                            bcrypt.hash(req.body.password, salt, (err, hash) => {
-
-                            });
-                        }),
                         lastname: req.body.lastname,
                         account_type: req.body.account_type,
                         created_at: Date(),
@@ -50,18 +42,30 @@ router.post("/register",(res,req,next)=>{
             });
         }
     });
-
-
-    
-
-
-
-
-
-
-
 });
 
+router.post("/login",(req,res,next)=>{
+    //search for username, crypt password, compare password
+    User.find({username: req.body.username},(err,foundUser)=>{
+        if(err){
+            res.status(401).send(`User not found, error - ${err}`);
+        }else{
+            let user = foundUser[0];
+            bcrypt.compare(req.body.password, user.password, (err,response)=>{
+                if(err){
+                    res.status(401).send(`Error comparing - ${err}`);
+                }else if(response){
+                    bcrypt.genSalt().then(rndHash=>{
+                        bcrypt.hash("SESSION",rndHash).then(token =>
+                            res.send({token:token,me:user}));
+                    });
+                }else{
+                    res.status('400').send("Password doesn't match")
+                }
+            })
+        }
+    });
+});
 
 
 
